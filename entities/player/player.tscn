@@ -1,12 +1,16 @@
-[gd_scene load_steps=17 format=3 uid="uid://dlovtkxc5n0m6"]
+[gd_scene load_steps=16 format=3 uid="uid://dlovtkxc5n0m6"]
 
-[ext_resource type="Script" path="res://entities/common/movement.gd" id="1_x0fwa"]
-[ext_resource type="PackedScene" uid="uid://d04e4qb2ri15s" path="res://entities/common/movement.tscn" id="2_ann82"]
+[ext_resource type="Script" path="res://entities/player/player.gd" id="1_l375x"]
 [ext_resource type="Texture2D" uid="uid://dy03vwxw3j6dn" path="res://entities/player/Player.png" id="2_psunh"]
-[ext_resource type="PackedScene" uid="uid://b8dx4kgq7eyph" path="res://entities/common/movement_controller.tscn" id="3_6usk6"]
-[ext_resource type="Script" path="res://entities/player/player_movement_controller.gd" id="4_fkk1v"]
-[ext_resource type="Resource" uid="uid://b84vye0m8r0ag" path="res://entities/common/movement_stats.tres" id="5_mhwsd"]
-[ext_resource type="PackedScene" uid="uid://cp0tjiyyy8mjc" path="res://entities/common/movement_animation.tscn" id="7_xoxkr"]
+[ext_resource type="Script" path="res://entities/common/movement/movement_stats.gd" id="2_qtggp"]
+[ext_resource type="Script" path="res://entities/common/movement/movement_animation.gd" id="5_a3v54"]
+[ext_resource type="Script" path="res://entities/player/player_controller.gd" id="8_wo6ki"]
+
+[sub_resource type="Resource" id="Resource_fiy7l"]
+script = ExtResource("2_qtggp")
+max_speed = 100.0
+acceleration = 1000.0
+friction = 500.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tidbe"]
 
@@ -138,10 +142,10 @@ _data = {
 "u_walk": SubResource("Animation_hri75")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("actor")]
+[node name="Player" type="CharacterBody2D"]
 motion_mode = 1
-script = ExtResource("1_x0fwa")
-actor = NodePath(".")
+script = ExtResource("1_l375x")
+movement_stats = SubResource("Resource_fiy7l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_tidbe")
@@ -152,22 +156,20 @@ texture = ExtResource("2_psunh")
 hframes = 6
 vframes = 10
 
-[node name="MovementController" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("3_6usk6")]
-script = ExtResource("4_fkk1v")
-actor = NodePath("..")
-movement_stats = ExtResource("5_mhwsd")
-
-[node name="Movement" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("2_ann82")]
-actor = NodePath("..")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_47hf8")
 }
 
-[node name="MovementAnimation" parent="." node_paths=PackedStringArray("actor", "sprite", "animation_player") instance=ExtResource("7_xoxkr")]
+[node name="ControllerContainer" type="Node" parent="."]
+
+[node name="MovementAnimationController" type="Node" parent="." node_paths=PackedStringArray("actor", "sprite", "animation_player")]
+script = ExtResource("5_a3v54")
 actor = NodePath("..")
 sprite = NodePath("../Sprite2D")
 animation_player = NodePath("../AnimationPlayer")
 
-[connection signal="movement_changed" from="MovementController" to="MovementAnimation" method="animate_movement"]
+[node name="PlayerController" type="Node" parent="."]
+script = ExtResource("8_wo6ki")
+
+[connection signal="moved" from="." to="MovementAnimationController" method="animate_walk"]
