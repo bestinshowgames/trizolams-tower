@@ -8,7 +8,8 @@
 script = ExtResource("3_lynur")
 max_speed = 250.0
 acceleration = 1000.0
-friction = 500.0
+friction = 1000.0
+dodge_factor = 5.0
 
 [node name="Playground" type="Node2D"]
 
@@ -20,5 +21,5 @@ layer_0/tile_data = PackedInt32Array(0, 196616, 0, 1, 262152, 0, 2, 262152, 0, 3
 
 [node name="Player" parent="." instance=ExtResource("2_3vtgo")]
 position = Vector2(75, 280)
-wall_min_slide_angle = 0.0
+wall_min_slide_angle = 0.523599
 movement_stats = SubResource("Resource_ji7t5")

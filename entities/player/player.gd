@@ -17,8 +17,22 @@ func set_controller(controller: ActorController) -> void:
 	$ControllerContainer.add_child(_controller)
 	
 func walk(direction: Vector2, rate: float) -> void:
+	_move(direction, 
+		direction * movement_stats.max_speed, 
+		movement_stats.acceleration * rate
+	)
+
+func dodge(direction: Vector2, rate: float) -> void:
+	_move(direction, 
+		direction * movement_stats.max_speed * movement_stats.dodge_factor, 
+		movement_stats.acceleration * rate * movement_stats.dodge_factor
+	)
+
+func _move(direction: Vector2, to: Vector2, delta: float):
 	if direction.length() > 0:
-		velocity = velocity.move_toward(direction * movement_stats.max_speed, movement_stats.acceleration * rate)
+		# TODO: Add a mechanism for halting current motion before moving 
+		# toward new direction
+		velocity = velocity.move_toward(to, delta)
 		moved.emit(direction)
 	elif velocity != Vector2.ZERO:
 		velocity = Vector2.ZERO
