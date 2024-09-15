@@ -1,21 +1,16 @@
 class_name PlayerController
 extends ActorController
 
-var run_timer: Timer
-
 const COMBO_TIMEOUT = 0.2
 const MAX_COMBO_CHAIN = 2
 
 var last_key_delta = 0
 var key_combo = []
 
-var walk = true
-
 func _init(actor: Actor):
 	super(actor)
-	run_timer = Timer.new()
-	add_child(run_timer)
 	run_timer.timeout.connect(_on_run_timer_timeout)
+	attack_timer.timeout.connect(_on_attack_timer_timeout)
 
 func _input(event) -> void:
 	if event is InputEventKey and event.pressed and !event.echo: # If distinct key press down
@@ -30,6 +25,10 @@ func _input(event) -> void:
 			run_timer.start(0.1)
 			walk = false
 		last_key_delta = 0
+	elif event is InputEventMouseButton and can_attack and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		can_attack = false
+		attack_timer.start(0.3) # TODO: Replace with weapon stats attack rate
+		attack_command.execute(actor, AttackCommand.Params.new())
 
 func _physics_process(delta: float) -> void:
 	last_key_delta += delta
@@ -41,3 +40,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_run_timer_timeout():
 	walk = true
+
+func _on_attack_timer_timeout():
+	can_attack = true

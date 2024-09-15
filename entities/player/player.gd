@@ -1,6 +1,6 @@
 extends Actor
 
-@export var movement_stats: MovementStats
+
 
 signal moved(direction: Vector2)
 
@@ -27,6 +27,9 @@ func dodge(direction: Vector2, rate: float) -> void:
 		direction * movement_stats.max_speed * movement_stats.dodge_factor, 
 		movement_stats.acceleration * rate * movement_stats.dodge_factor
 	)
+	
+func attack() -> void:
+	print("Attack!")
 
 func _move(direction: Vector2, to: Vector2, delta: float):
 	if direction.length() > 0:
