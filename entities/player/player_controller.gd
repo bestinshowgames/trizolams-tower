@@ -12,7 +12,7 @@ func _init(actor: Actor):
 	run_timer.timeout.connect(_on_run_timer_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 
-func _input(event) -> void:
+func _unhandled_input(event) -> void:
 	if event is InputEventKey and event.pressed and !event.echo: # If distinct key press down
 		if last_key_delta > COMBO_TIMEOUT:                   # Reset combo if stale
 			key_combo = []

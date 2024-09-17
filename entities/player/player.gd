@@ -1,8 +1,7 @@
 extends Actor
 
-
-
 signal moved(direction: Vector2)
+signal attacked
 
 var _controller: ActorController
 
@@ -29,7 +28,7 @@ func dodge(direction: Vector2, rate: float) -> void:
 	)
 	
 func attack() -> void:
-	print("Attack!")
+	attacked.emit()
 
 func _move(direction: Vector2, to: Vector2, delta: float):
 	if direction.length() > 0:

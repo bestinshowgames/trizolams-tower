@@ -12,9 +12,6 @@ func _ready():
 	current_animation = "d_idle"
 	previous_direction = actor.velocity
 
-func _process(_delta):
-	pass
-
 func animate_walk(direction: Vector2):
 	if direction != previous_direction:
 		previous_direction = direction

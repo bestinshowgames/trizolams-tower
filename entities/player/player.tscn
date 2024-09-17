@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dlovtkxc5n0m6"]
+[gd_scene load_steps=20 format=3 uid="uid://dlovtkxc5n0m6"]
 
 [ext_resource type="Script" path="res://entities/player/player.gd" id="1_l375x"]
 [ext_resource type="Texture2D" uid="uid://dy03vwxw3j6dn" path="res://entities/player/Player.png" id="2_psunh"]
 [ext_resource type="Script" path="res://entities/common/movement/movement_stats.gd" id="2_qtggp"]
-[ext_resource type="Script" path="res://entities/common/movement/movement_animation.gd" id="5_a3v54"]
+[ext_resource type="Script" path="res://entities/common/animation_controllers/movement_animation.gd" id="5_a3v54"]
+[ext_resource type="Script" path="res://entities/common/animation_controllers/attack_animation.gd" id="6_yky5f"]
 [ext_resource type="Script" path="res://entities/player/player_controller.gd" id="8_wo6ki"]
 
 [sub_resource type="Resource" id="Resource_fiy7l"]
@@ -132,13 +133,64 @@ tracks/0/keys = {
 "values": [30, 31, 32, 33, 34, 35]
 }
 
+[sub_resource type="Animation" id="Animation_pxvyp"]
+resource_name = "d_attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [36, 37, 38, 39]
+}
+
+[sub_resource type="Animation" id="Animation_ck46e"]
+resource_name = "h_attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [42, 43, 44, 45]
+}
+
+[sub_resource type="Animation" id="Animation_am810"]
+resource_name = "u_attack"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [48, 49, 50, 51]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_47hf8"]
 _data = {
 "RESET": SubResource("Animation_7kbvw"),
+"d_attack": SubResource("Animation_pxvyp"),
 "d_idle": SubResource("Animation_kh6rs"),
 "d_walk": SubResource("Animation_reyuu"),
+"h_attack": SubResource("Animation_ck46e"),
 "h_idle": SubResource("Animation_o1i3j"),
 "h_walk": SubResource("Animation_d3sw4"),
+"u_attack": SubResource("Animation_am810"),
 "u_idle": SubResource("Animation_eanow"),
 "u_walk": SubResource("Animation_hri75")
 }
@@ -173,4 +225,12 @@ animation_player = NodePath("../AnimationPlayer")
 [node name="PlayerController" type="Node" parent="."]
 script = ExtResource("8_wo6ki")
 
+[node name="AttackAnimationController" type="Node" parent="." node_paths=PackedStringArray("actor", "sprite", "animation_player")]
+script = ExtResource("6_yky5f")
+actor = NodePath("..")
+sprite = NodePath("../Sprite2D")
+animation_player = NodePath("../AnimationPlayer")
+
+[connection signal="attacked" from="." to="AttackAnimationController" method="animate_attack"]
 [connection signal="moved" from="." to="MovementAnimationController" method="animate_walk"]
+[connection signal="animation_finished" from="AnimationPlayer" to="AttackAnimationController" method="_on_animation_player_animation_finished"]
