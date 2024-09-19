@@ -196,6 +196,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+position = Vector2(100, 100)
 motion_mode = 1
 script = ExtResource("1_l375x")
 movement_stats = SubResource("Resource_fiy7l")

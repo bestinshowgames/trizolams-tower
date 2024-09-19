@@ -12,7 +12,7 @@ func _init(actor: Actor):
 	run_timer.timeout.connect(_on_run_timer_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 
-func _unhandled_input(event) -> void:
+func _input(event) -> void:
 	if event is InputEventKey and event.pressed and !event.echo: # If distinct key press down
 		if last_key_delta > COMBO_TIMEOUT:                   # Reset combo if stale
 			key_combo = []
@@ -25,18 +25,20 @@ func _unhandled_input(event) -> void:
 			run_timer.start(0.1)
 			walk = false
 		last_key_delta = 0
-	elif event is InputEventMouseButton and can_attack and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		can_attack = false
-		attack_timer.start(0.3) # TODO: Replace with weapon stats attack rate
-		attack_command.execute(actor, AttackCommand.Params.new())
 
 func _physics_process(delta: float) -> void:
 	last_key_delta += delta
-	var input = Input.get_vector("left", "right", "up", "down")
+	var move_input = Input.get_vector("left", "right", "up", "down")
 	if !walk:
-		dodge_command.execute(actor, DodgeCommand.Params.new(input, delta))
+		dodge_command.execute(actor, DodgeCommand.Params.new(move_input, delta))
 	else:
-		walk_command.execute(actor, WalkCommand.Params.new(input, delta))
+		walk_command.execute(actor, WalkCommand.Params.new(move_input, delta))
+		
+	var attack = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	if attack and can_attack:
+		can_attack = false
+		attack_timer.start(0.4) # TODO: Replace with weapon stats attack rate
+		attack_command.execute(actor, AttackCommand.Params.new())
 
 func _on_run_timer_timeout():
 	walk = true

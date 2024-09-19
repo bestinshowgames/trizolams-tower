@@ -1,3 +1,4 @@
+class_name Player
 extends Actor
 
 signal moved(direction: Vector2)
