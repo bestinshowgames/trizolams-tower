@@ -1,5 +1,5 @@
 class_name Command
 extends RefCounted
 
-func execute(actor: Actor, data: Object = null) -> void:
+func execute(_actor: Actor, _data: Object = null) -> void:
 	pass

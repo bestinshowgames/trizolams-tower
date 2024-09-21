@@ -5,9 +5,9 @@ class Params:
 	var direction: Vector2
 	var rate: float
 	
-	func _init(direction: Vector2, rate: float) -> void:
-		self.direction = direction
-		self.rate = rate
+	func _init(_direction: Vector2, _rate: float) -> void:
+		self.direction = _direction
+		self.rate = _rate
 
 func execute(actor: Actor, data: Object = null) -> void:
 	if data is Params:

@@ -3,10 +3,10 @@ extends CharacterBody2D
 
 @export var movement_stats: MovementStats
 
-func walk(direction: Vector2, rate: float) -> void:
+func walk(_direction: Vector2, _rate: float) -> void:
 	pass
 
-func dodge(direction: Vector2, rate: float) -> void:
+func dodge(_direction: Vector2, _rate: float) -> void:
 	pass
 
 func attack() -> void:

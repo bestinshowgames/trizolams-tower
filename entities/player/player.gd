@@ -31,11 +31,11 @@ func dodge(direction: Vector2, rate: float) -> void:
 func attack() -> void:
 	attacked.emit()
 
-func _move(direction: Vector2, to: Vector2, delta: float):
+func _move(direction: Vector2, to: Vector2, _delta: float):
 	if direction.length() > 0:
 		# TODO: Add a mechanism for halting current motion before moving 
 		# toward new direction
-		velocity = velocity.move_toward(to, delta)
+		velocity = to
 		moved.emit(direction)
 	elif velocity != Vector2.ZERO:
 		velocity = Vector2.ZERO

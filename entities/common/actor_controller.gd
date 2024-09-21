@@ -12,8 +12,8 @@ var walk_command := WalkCommand.new()
 var dodge_command := DodgeCommand.new()
 var attack_command := AttackCommand.new()
 
-func _init(actor: Actor) -> void:
-	self.actor = actor
+func _init(_actor: Actor) -> void:
+	self.actor = _actor
 	run_timer = Timer.new()
 	attack_timer = Timer.new()
 	add_child(run_timer)
